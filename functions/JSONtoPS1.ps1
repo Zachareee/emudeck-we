@@ -1,7 +1,7 @@
 
 
 function setSettinginFile($keySetting){
-	$keySetting | Out-File -FilePath "$env:USERPROFILE/EmuDeck/settings.ps1" -Append
+	$keySetting | Out-File -FilePath "$userFolder/EmuDeck/settings.ps1" -Append
 	Write-Output "Added $keySetting to settings.ps1"
 	#Start-Sleep -Seconds 1
 }

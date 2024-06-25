@@ -1,6 +1,7 @@
 function SRM_install(){
 	setMSG 'Downloading Steam Rom Manager'
-	$url_srm = getLatestReleaseURLGH 'SteamGridDB/steam-rom-manager' 'exe' 'portable'
+	#$url_srm = getLatestReleaseURLGH 'SteamGridDB/steam-rom-manager' 'exe' 'portable'
+	$url_srm="https://github.com/SteamGridDB/steam-rom-manager/releases/download/v2.5.11/Steam-ROM-Manager-portable-2.5.11.exe"
 	download $url_srm "srm.exe"
 	Move-item -Path "$temp/srm.exe" -destination "$toolsPath/srm.exe" -force
 	"" | Set-Content "$env:USERPROFILE\EmuDeck\.srm_migrated_2123" -Encoding UTF8
@@ -142,7 +143,7 @@ function SRM_createParsers(){
 		$exclusionList=$exclusionList+"nintendo_wiiu-cemu-rpx.json"
 		$exclusionList=$exclusionList+"nintendo_wiiu-cemu-wud-wux-wua.json"
 	}
-	if ( -or -not (Ryujinx_isInstalled -like "*true*")){
+	if ( -not (Ryujinx_isInstalled -like "*true*")){
 		$exclusionList=$exclusionList+"nintendo_switch-ryujinx.json"
 	}
 	if ( -not (PCSX2QT_isInstalled -like "*true*")){
@@ -157,7 +158,7 @@ function SRM_createParsers(){
 	if ( -not (Vita3K_isInstalled -like "*true*")){
 		$exclusionList=$exclusionList+"sony_psvita-vita3k-pkg.json"
 	}
-	if (-not (mGBA_isInstalled -like "*true*")){
+	if ( -not (mGBA_isInstalled -like "*true*")){
 		$exclusionList=$exclusionList+"nintendo_gba-mgba.json"
 	}
 
@@ -443,9 +444,16 @@ Set-ItemProperty -Path HKLM:\System\CurrentControlSet\Control\Lsa\FIPSAlgorithmP
 }
 
 
-
-
-
+function SRM_deleteCache(){
+	$steamRegPath = "HKCU:\Software\Valve\Steam"
+ 	$steamInstallPath = (Get-ItemProperty -Path $steamRegPath).SteamPath
+ 	Get-ChildItem -Path "$steamInstallPath" -Directory -Depth 2 |
+	Where-Object { $_.Name -eq 'config' } |
+	Remove-Item -Force -Recurse
+	if($?){
+		Write-Output "true"
+	}
+}
 
 
 	 #gba
@@ -473,3 +481,5 @@ Set-ItemProperty -Path HKLM:\System\CurrentControlSet\Control\Lsa\FIPSAlgorithmP
 			#	$exclusionList=$exclusionList+"nintendo_gba-mgba.json"
 			#	$exclusionList=$exclusionList+"nintendo_gbc-mgba.json"
 			#}
+
+

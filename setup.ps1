@@ -19,11 +19,7 @@ Start-Sleep -Seconds 1.5
 
 Start-Transcript "$env:USERPROFILE\EmuDeck\logs\EmuDeckSetup.log"
 
-#We install 7zip - Now its on the appimage
-#winget install -e --id 7zip.7zip --accept-package-agreements --accept-source-agreements
-
 # JSON Parsing to ps1 file
-
 . "$env:APPDATA\EmuDeck\backend\functions\JSONtoPS1.ps1"
 JSONtoPS1
 
@@ -120,6 +116,11 @@ $test=Test-Path -Path "$emusPath\citra\citra-qt.exe"
 if(-not($test) -and $doInstallCitra -eq "true" ){
 	Citra_install
 }
+#Citra
+$test=Test-Path -Path "$emusPath\lime3ds\lime3ds-qt.exe"
+if(-not($test) -and $doInstallLime3DS -eq "true" ){
+	Lime3DS_install
+}
 #melonDS
 $test=Test-Path -Path "$emusPath\melonDS\melonDS.exe"
 if(-not($test) -and $doInstallmelonDS -eq "true" ){
@@ -185,6 +186,12 @@ if(-not($test) -and $doInstallScummVM -eq "true" ){
 	ScummVM_install
 }
 
+$test=Test-Path -Path "$emusPath\shadps4-qt\shadps4.exe"
+if(-not($test) -and $doInstallShadPS4 -eq "true" ){
+	ShadPS4_install
+}
+
+
 #
 # Emus Configuration
 #
@@ -233,6 +240,11 @@ if ( "$doSetupRyujinx" -eq "true" ){
 if ( "$doSetupCitra" -eq "true" ){
 	Citra_init
 	$setupSaves+="Citra_setupSaves;"
+}
+
+if ( "$doSetupLime3DS" -eq "true" ){
+	Lime3DS_init
+	$setupSaves+="Lime3DS_setupSaves;"
 }
 
 if ( "$doSetupCemu" -eq "true" ){
@@ -285,6 +297,11 @@ if ( "$doSetupScummVM" -eq "true" ){
 if ( "$doSetupMGBA" -eq "true" ){
 	mGBA_init
 	$setupSaves+="mGBA_setupSaves;"
+}
+
+if ( "$doSetupShadPS4" -eq "true" ){
+	ShadPS4_init
+	$setupSaves+="ShadPS4_setupSaves;"
 }
 
 

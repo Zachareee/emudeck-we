@@ -22,10 +22,12 @@ if (-not "$emulationPath") {
 
 . "$env:APPDATA\EmuDeck\backend\functions\EmuScripts\emuDeckCemu.ps1"
 . "$env:APPDATA\EmuDeck\backend\functions\EmuScripts\emuDeckCitra.ps1"
+. "$env:APPDATA\EmuDeck\backend\functions\EmuScripts\emuDeckLime3DS.ps1"
 . "$env:APPDATA\EmuDeck\backend\functions\EmuScripts\emuDeckDolphin.ps1"
 . "$env:APPDATA\EmuDeck\backend\functions\EmuScripts\emuDeckDuckStation.ps1"
 . "$env:APPDATA\EmuDeck\backend\functions\EmuScripts\emuDeckRetroArch.ps1"
 . "$env:APPDATA\EmuDeck\backend\functions\EmuScripts\emuDeckRPCS3.ps1"
+. "$env:APPDATA\EmuDeck\backend\functions\EmuScripts\emuDeckShadPS4.ps1"
 . "$env:APPDATA\EmuDeck\backend\functions\EmuScripts\emuDeckMAME.ps1"
 . "$env:APPDATA\EmuDeck\backend\functions\EmuScripts\emuDeckXemu.ps1"
 . "$env:APPDATA\EmuDeck\backend\functions\EmuScripts\emuDeckXenia.ps1"
@@ -48,6 +50,9 @@ if (-not "$emulationPath") {
 . "$env:APPDATA\EmuDeck\backend\functions\ToolScripts\emuDeckSaveSync.ps1"
 . "$env:APPDATA\EmuDeck\backend\functions\cloudSyncHealth.ps1"
 #. "$env:APPDATA\EmuDeck\backend\functions\ToolScripts\emuDeckNetplay.ps1"
+. "$env:APPDATA\EmuDeck\backend\functions\ToolScripts\emuDeckMigration.ps1"
+. "$env:APPDATA\EmuDeck\backend\functions\generateGameLists.ps1"
+. "$env:APPDATA\EmuDeck\backend\functions\ToolScripts\emuDeckPlugins.ps1"
 
 #Android
 . "$env:APPDATA\EmuDeck\backend\android\functions\all.ps1"

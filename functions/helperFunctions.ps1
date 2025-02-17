@@ -142,26 +142,20 @@ function getLocations {
 
 
 function customLocation(){
+	Add-Type -AssemblyName System.Windows.Forms
 
-#	# Get a list of all logical drives in the system
-#	$drives = Get-WmiObject -Class Win32_LogicalDisk
-#
-#	# Filter internal and removable drives
-#	$internalDrives = $drives | Where-Object { $_.DriveType -eq 3 }  # 3 represents internal drives
-#	$removableDrives = $drives | Where-Object { $_.DriveType -eq 2 }  # 2 represents removable drives
-#
-#	# Display drive letters for internal drives
-#	Write-Host "Internal Hard Drives:"
-#	$internalDrives | ForEach-Object { $_.DeviceID } | Sort-Object | Format-Table -AutoSize
-#
-#	# Display drive letters for removable drives (e.g., SD cards)
-#	Write-Host "Removable Drives (e.g., SD Cards):"
-#	$removableDrives | ForEach-Object { $_.DeviceID } | Sort-Object | Format-Table -AutoSize
+	# Crear el selector de directorios
+	$folderBrowser = New-Object System.Windows.Forms.FolderBrowserDialog
+	$folderBrowser.Description = "Select a folder"
+	$folderBrowser.ShowNewFolderButton = $true
 
-	$drives = (Get-PSDrive -PSProvider FileSystem).Root
-	$winPath = showListDialog 'Select Destination' 'Please select where do you want to install EmuDeck:' $drives
-	Start-Sleep -Seconds 0.5
-	Write-Output $winPath;
+	# Mostrar el selector y capturar la carpeta seleccionada
+	if ($folderBrowser.ShowDialog() -eq [System.Windows.Forms.DialogResult]::OK) {
+		$selectedFolder = $folderBrowser.SelectedPath
+		Write-Host "$selectedFolder"
+	} else {
+		Write-Host "C:\"
+	}
 }
 
 function testLocationValid($mode, $path){
@@ -267,7 +261,7 @@ function getReleaseURLGH($Repository, $FileType, $FindToMatch, $IgnoreText = "pe
 
 function check_internet_connection(){
 
-	if ((Test-Connection 8.8.8.8 -Count 1 -ErrorAction SilentlyContinue).StatusCode -eq 0) { return "true" } else { return "false" }
+	if ((Test-Connection 1.1.1.1 -Count 1 -ErrorAction SilentlyContinue).StatusCode -eq 0) { return "true" } else { return "false" }
 
 }
 
@@ -798,6 +792,14 @@ function createSymlink($source, $target){
 mkdir "$target" -ErrorAction SilentlyContinue
 #
 if ($networkInstallation -eq "false"){
+
+	if (Test-Path $source) {
+	   	$item = Get-Item $source
+ 	  	if ($item.LinkType -eq "Junction") {
+ 		  	Remove-Item -Path $source -Force -Recurse
+	   	}
+	}
+
 	New-Item -ItemType Junction -Path "$source"  -Target "$target" -ErrorAction SilentlyContinue
 } else {
 
@@ -837,39 +839,16 @@ function createSaveLink($simLinkPath, $emuSavePath){
 				echo "Symlink already exists, we do nothing since this is a network installation"
 			}
 		} else {
-			#Check if we have space
-
-			#$userDrive=(Get-Item "$emulationPath").PSDrive.Name
-			#$destinationFree = (Get-PSDrive -Name $userDrive).Free
-			#$sizeInGB = [Math]::Round($destinationFree / 1GB)
-
-			#$originSize = (Get-ChildItem -Path "$simLinkPath" -Recurse | Measure-Object -Property Length -Sum).Sum
-			#$wshell = New-Object -ComObject Wscript.Shell
-
-			#if ( $originSize -gt $destinationFree ){
-			#	$Output = $wshell.Popup("You don't have enough space in your $userDrive drive, free at least $sizeInGB GB so we can migrate your saves")
-			#	exit
-			#}
 
 			# We copy the saves to the Emulation/saves Folder and we create a backup
 			echo "Creating saves symlink"
 			$originalFolderName = Split-Path $simLinkPath -Leaf
 			$newFolderName = Split-Path $emuSavePath -Leaf
 			$emuSaveParent = Split-Path $emuSavePath -Parent
-			
+
 			rmdir "$emuSavePath" -ErrorAction SilentlyContinue
 			Move-Item -Path "$simLinkPath" -Destination $emuSaveParent -Force
 			Rename-Item -Path "$emuSaveParent\$originalFolderName" -NewName  $newFolderName -Force
-			
-   			#Copy-Item -Path "$simLinkPath\*" -Destination $emuSavePath -Recurse -Force
-
-			if ($?) {
-				if ($networkInstallation -eq "false"){
-					$backupSuffix = "_bak"
-					$backupName = -join($simLinkPath, $backupSuffix)
-					Rename-Item -Path "$simLinkPath" -NewName "$backupName"  -ErrorAction SilentlyContinue
-				}
-			}
 			createSymlink $simLinkPath $emuSavePath
 		}
 	}else{
@@ -1301,10 +1280,15 @@ function isLatestVersionGH($emuName){
 
 
 function storePatreonToken($token){
+	mkdir "$savesPath" -ErrorAction SilentlyContinue
 	$token | Set-Content -Path "$savesPath/.token" -Encoding UTF8
 	if (Test-Path "$cloud_sync_bin") {
-		& $cloud_sync_bin --progress copyto --fast-list --checkers=50 --transfers=50 --low-level-retries 1 --retries 1 "$savesPath/.token" "$cloud_sync_provider`:Emudeck\saves\.token"
+		& $cloud_sync_bin --progress copyto --fast-list --checkers=50 --transfers=50 --low-level-retries 1 --retries 1 "$savesPath/.token" "$cloud_sync_provider`:$cs_user`Emudeck\saves\.token"
 	}else{
 		echo "NOPE"
 	}
+}
+
+function startCompressor(){
+	Start-Process cmd -ArgumentList "/k powershell -ExecutionPolicy Bypass -NoProfile -File `"$toolsPath/chdconv/chddeck.ps1`""
 }

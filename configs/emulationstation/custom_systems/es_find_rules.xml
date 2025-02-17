@@ -8,6 +8,13 @@
 		<entry>%ESPATH%\..\Emulators\yuzu\yuzu-windows-msvc\yuzu.exe</entry>
 	</rule>
 </emulator>
+<emulator name="SHADPS4">
+	<!-- PS4 emulator ShadPS4 -->
+	<rule type="staticpath">
+		<entry>%ESPATH%\Emulators\shadps4-qt\shadps4.exe</entry>
+		<entry>%ESPATH%\..\Emulators\shadps4-qt\shadps4.exe</entry>
+	</rule>
+</emulator>
 <emulator name="CITRA">
 	<!-- Nintendo 3DS emulator Citra -->
 	<rule type="staticpath">
@@ -15,6 +22,13 @@
 		<entry>%ESPATH%\Emulators\Citra\canary-mingw\citra-qt.exe</entry>
 		<entry>%ESPATH%\..\Emulators\Citra\nightly-mingw\citra-qt.exe</entry>
 		<entry>%ESPATH%\..\Emulators\Citra\canary-mingw\citra-qt.exe</entry>
+		<entry>%ESPATH%\Emulators\Citra\citra-qt.exe</entry>
+	</rule>
+</emulator>
+<emulator name="LIME3DS">
+	<rule type="staticpath">
+		<entry>%ESPATH%\Emulators\lime3ds\lime3ds-gui.exe</entry>
+		<entry>%ESPATH%\Emulators\lime3ds\lime3ds.exe</entry>
 	</rule>
 </emulator>
 </ruleList>

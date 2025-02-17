@@ -1,7 +1,7 @@
 function SRM_install(){
 	setMSG 'Downloading Steam Rom Manager'
-	#$url_srm = getLatestReleaseURLGH 'SteamGridDB/steam-rom-manager' 'exe' 'portable'
-	$url_srm="https://github.com/SteamGridDB/steam-rom-manager/releases/download/v2.5.11/Steam-ROM-Manager-portable-2.5.11.exe"
+	$url_srm = getLatestReleaseURLGH 'SteamGridDB/steam-rom-manager' 'exe' 'portable'
+	#$url_srm="https://github.com/SteamGridDB/steam-rom-manager/releases/download/v2.5.11/Steam-ROM-Manager-portable-2.5.11.exe"
 	download $url_srm "srm.exe"
 	Move-item -Path "$temp/srm.exe" -destination "$toolsPath/srm.exe" -force
 	"" | Set-Content "$env:USERPROFILE\EmuDeck\.srm_migrated_2123" -Encoding UTF8
@@ -378,6 +378,10 @@ Set-ItemProperty -Path HKLM:\System\CurrentControlSet\Control\Lsa\FIPSAlgorithmP
 	if ($doInstallRPCS3 -eq "true" -or (RPCS3_isInstalled -like "*true*")){
 		createLauncher rpcs3
 		$setupSaves+="RPCS3_setupSaves;"
+	}
+	if ($doInstallShadPS4 -eq "true" -or (ShadPS4_isInstalled -like "*true*")){
+		createLauncher shadps4
+		$setupSaves+="ShadPS4_setupSaves;"
 	}
 	if ($doInstallYuzu -eq "true" -or (Yuzu_isInstalled -like "*true*")){
 		createLauncher yuzu

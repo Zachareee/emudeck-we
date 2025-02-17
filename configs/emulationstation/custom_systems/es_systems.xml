@@ -9,15 +9,6 @@
         <platform>ps3</platform>
         <theme>ps3</theme>
     </system>
-    <system>
-        <name>ps3-shortcut</name>
-        <fullname>Sony PlayStation 3 - Shortcut Games</fullname>
-        <path>%ROMPATH%\ps3\shortcuts</path>
-        <extension>.lnk .LNK</extension>
-        <command label="RPCS3 Shortcut (Standalone)">%HIDEWINDOW% %ESCAPESPECIALS% %EMULATOR_OS-SHELL% /C %ROM%</command>
-        <platform>ps3</platform>
-        <theme>ps3</theme>
-    </system>
 	<system>
 		<name>ps3-shortcut</name>
 		<fullname>Sony PlayStation 3 - Shortcut Games</fullname>
@@ -27,6 +18,24 @@
 		<platform>ps3</platform>
 		<theme>ps3</theme>
 	</system>
+	<system>
+		<name>ps4</name>
+		<fullname>Sony PlayStation 4</fullname>
+		<path>%ROMPATH%\ps4\shortcuts</path>
+		<extension>.lnk .LNK</extension>
+		<command label="ShadPS4 Shortcut (Standalone)">%ESCAPESPECIALS% %EMULATOR_OS-SHELL% /C %ROM%</command>
+		<platform>ps4</platform>
+		<theme>ps4</theme>
+	</system>
+	<!-- <system>
+		<name>ps4-pkg</name>
+		<fullname>Sony PlayStation 4</fullname>
+		<path>%ROMPATH%\ps4</path>
+		<extension>.ps4 .PS4</extension>
+		<command label="RPCS3 Directory (Standalone)">%EMULATOR_SHADPS4% --no-gui %ROM%</command>
+		<platform>ps4</platform>
+		<theme>ps4</theme>
+	</system> -->
 	<system>
 		<name>switch</name>
 		<fullname>Nintendo Switch</fullname>
@@ -45,6 +54,7 @@
 		<command label="Citra">%EMULATOR_RETROARCH% -L %CORE_RETROARCH%\citra_libretro.dll %ROM%</command>
 		<command label="Citra 2018">%EMULATOR_RETROARCH% -L %CORE_RETROARCH%\citra2018_libretro.dll %ROM%</command>
 		<command label="Citra (Standalone)">%EMULATOR_CITRA% %ROM%</command>
+		<command label="Lime 3DS">%EMULATOR_LIME3DS% %ROM%</command>
 		<platform>n3ds</platform>
 		<theme>n3ds</theme>
 	</system>

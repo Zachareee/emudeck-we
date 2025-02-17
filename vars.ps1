@@ -8,9 +8,9 @@ $url_esde = "https://gitlab.com/es-de/emulationstation-de/-/package_files/164503
 $url_scummVM = "https://downloads.scummvm.org/frs/scummvm/2.7.1/scummvm-2.7.1-win32-x86_64.zip"
 
 $userFolder = "D:\\Emulation"
-$emusPath = "$userFolder\EmuDeck\Emulators"
-$emusPathSRM = "$userFolder\\EmuDeck\\Emulators"
-$esdePath = "$userFolder/EmuDeck/EmulationStation-DE"
+$emusPath = "$userFolder\Emulators"
+$emusPathSRM = "$userFolder\\Emulators"
+$esdePath = "$userFolder/EmulationStation-DE"
 $pegasusPath = "$userFolder/EmuDeck/Pegasus"
 $temp = "$userFolder\EmuDeck\temp"
 $nssm = "$userFolder\EmuDeck\backend\wintools\nssm.exe"

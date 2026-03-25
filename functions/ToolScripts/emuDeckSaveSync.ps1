@@ -311,6 +311,39 @@ function cloud_sync_config($cloud_sync_provider, $token){
 		 & $cloud_sync_bin copy "$savesPath/.hash" "$cloud_sync_provider`:$cs_user`Emudeck\saves"
 
 		 Write-Output 'true'
+   elseif ($cloud_sync_provider -eq "Emudeck-cloud2") {
+   
+		   $token = $token -replace "---", '|||'
+   
+			$parts = $token -split '\|\|\|'
+			$json = '{"token":"'+ $token + '"}'
+			$response = Invoke-RestMethod -Method Post -Uri "https://cloud.emudeck.com/login.php" `
+				-ContentType "application/json" `
+				-Body $json
+   
+			# Asignar los valores a variables
+			$cloud_key_id = $response.cloud_key_id
+			$cloud_key = $response.cloud_key
+   
+			$pass= $($password.cloud_token)
+   
+			$ofuspass = $pass
+   
+			$user=$($parts[0])
+			setSetting "cs_user" "emudeck-saves/$user/"
+   
+   
+			Start-Process $cloud_sync_bin -ArgumentList @"
+					 config update Emudeck-cloud2 secret_access_key="$cloud_key" access_key_id="$cloud_key_id"
+   "@  -WindowStyle Maximized -Wait
+   
+			& $cloud_sync_bin mkdir "$cloud_sync_provider`:$cs_user`Emudeck\saves"
+			cloud_sync_save_hash($savesPath)
+   
+			& $cloud_sync_bin copy "$savesPath/.hash" "$cloud_sync_provider`:$cs_user`Emudeck\saves"
+   
+			Write-Output 'true'
+			
    } elseif ($cloud_sync_provider -eq "Emudeck-SMB") {
 	  $credentials = Get-Custom-Credentials "Emudeck-SMB"
 	  $pass=$credentials.Password
